@@ -19,4 +19,17 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware('auth')
+    // dentro la cartella admin
+    ->namespace('Admin') 
+    // viene aggiunto admin alla rotta, esemgio admin.home
+    ->name('admin.')
+    // prefisso della uri
+    ->prefix('admin')
+    // gruppo di rotte con le caratteristiche precedenti
+    ->group(function() {
+        Route::get('/home', 'HomeController@index')->name('home');
+    });
+    
+
+
