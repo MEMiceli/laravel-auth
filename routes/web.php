@@ -29,6 +29,7 @@ Route::middleware('auth')
     // gruppo di rotte con le caratteristiche precedenti
     ->group(function() {
         Route::get('/home', 'HomeController@index')->name('home');
+        route::resource('posts', 'PostController');
     });
 
     Route::get("{any?}", function() {
