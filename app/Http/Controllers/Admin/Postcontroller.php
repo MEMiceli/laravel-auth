@@ -16,7 +16,8 @@ class Postcontroller extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+        return view('admin.posts.index',compact('posts'));
     }
 
     /**
@@ -59,9 +60,9 @@ class Postcontroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        return view('admin.posts.show', compact('post'));
     }
 
     /**
@@ -70,9 +71,9 @@ class Postcontroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Post $post)
     {
-        //
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
@@ -82,9 +83,26 @@ class Postcontroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Post $post)
     {
-        //
+        $request->validate([
+            'title'=> 'required|string|max:255',
+            'content'=> 'required|string',
+            'published'=> 'sometimes|accepted'
+        ]);
+
+        $data = $request->all();
+
+        if( $post->title != $data['title']) {
+            $post->slug = Str::of($data['title'])->slug('-');
+        }
+        $post->fill($data);
+
+        $post->published = isset($data['published']);
+
+        $post->save();
+
+        return redirect()->route('admin.posts.show', $post->id);
     }
 
     /**
