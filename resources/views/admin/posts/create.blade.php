@@ -11,15 +11,24 @@
                     @csrf
                     <div class="form-group">
                         <label for="title">Titolo</label>
-                        <input type="text" class="form-control" id="title" name="title">
+                        <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title" value="{{old('title')}}">
+                        @error('title')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group">
                         <label for="title">Contenuto</label>
-                        <textarea class="form-control" name="content" id="content" cols="30" rows="10"></textarea>
+                        <textarea class="form-control @error('content') is-invalid @enderror" name="content" id="content" cols="30" rows="10">{{old('content')}}"</textarea>
+                        @error('content')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="published" name="published">
-                        <label class="form-check-label" for="published">Pubblica</label>
+                        <input type="checkbox" class="form-check-input @error('published') is-invalid @enderror" id="published" name="published">
+                        <label class="form-check-label" for="published" value="{{old('published') ? 'checked' : ''}}">Pubblica</label>
+                        @error('published')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <button type="submit" class="btn btn-primary">Crea</button>
                 </form>
